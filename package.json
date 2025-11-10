@@ -1,0 +1,38 @@
+{
+  "name": "library_managemnt_system",
+  "version": "1.0.0",
+  "description": "Backend capstone project for a Library Management System built with \r Node.js, \r TypeScript, \r Express, \r Firebase (Auth + Firestore), \r Joi for validation, \r Morgan for logging, \r Swagger for API documentation.",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node src/server.ts",
+    "build": "tsc",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Navkaran7007/library-management-system.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Navkaran7007/library-management-system/issues"
+  },
+  "homepage": "https://github.com/Navkaran7007/library-management-system#readme",
+  "devDependencies": {
+    "@types/express": "^5.0.5",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.10.0",
+    "@types/supertest": "^6.0.3",
+    "jest": "^30.2.0",
+    "supertest": "^7.1.4",
+    "ts-jest": "^29.4.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
