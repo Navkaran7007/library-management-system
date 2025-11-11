@@ -1,5 +1,6 @@
 import express, { Express } from "express";
 import bookRoutes from "./api/v1/routes/bookRoutes";
+import borrowRoutes from "./api/v1/routes/borrowRoutes";
 
 // Initialize Express application
 const app: Express = express();
@@ -11,6 +12,6 @@ app.get("/", (req, res) => {
 app.use(express.json())
 
 app.use("/api/v1", bookRoutes)
-
+app.use("/api/v1", borrowRoutes)
 
 export default app;
