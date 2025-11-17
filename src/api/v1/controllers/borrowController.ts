@@ -38,22 +38,22 @@ export const borrowBook = (req: Request, res: Response): void => {
 };
 
 /**
- * Return a borrowed book
- * @param req - Express request object
- * @param res - Express response object
+ * Return a borrowed book 
  */
 export const returnBook = (req: Request, res: Response): void => {
-  const { borrowId } = req.body;
+  const { id } = req.params;
 
-  if (!borrowId) {
-    res.status(400).json({ message: "borrowId is required" });
-    return;
+  const idx = borrows.findIndex((b) => b.id === id);
+
+  if (idx === -1) {
+    res.status(404).json({ message: "Borrow record not found" })
+    return
   }
 
-  const idx = borrows.findIndex((b) => b.id === borrowId);
-  if (idx === -1) {
-    res.status(404).json({ message: "Borrow record not found" });
-    return;
+  // Already returned?
+  if (borrows[idx].status === "RETURNED") {
+    res.status(400).json({ message: "Book already returned" })
+    return
   }
 
   borrows[idx].status = "RETURNED";

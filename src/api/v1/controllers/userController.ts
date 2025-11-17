@@ -26,6 +26,34 @@ export const getUserById = (req: Request, res: Response): void => {
   res.status(200).json({ message: "User found", data: user });
 };
 
+/**
+ * Create a new user
+ */
+export const createUser = (req: Request, res: Response): void => {
+  const { displayName, email } = req.body;
 
+  if (!displayName || !email) {
+    res.status(400).json({ message: "Name and email are required" });
+    return;
+  }
+
+  const now = new Date();
+
+  const newUser: User = {
+    id: String(Date.now()),
+    displayName,
+    email,
+    role: "MEMBER",      
+    createdAt: now,
+    updatedAt: now,
+  };
+
+  users.push(newUser);
+
+  res.status(201).json({
+    message: "User created successfully",
+    data: newUser,
+  });
+};
 
 
