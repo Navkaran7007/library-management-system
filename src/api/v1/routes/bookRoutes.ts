@@ -1,10 +1,10 @@
 import { Router } from "express";
 import {
-  createBook,
-  getAllBooks,
-  getBookById,
-  updateBook,
-  deleteBook,
+  createBookController,
+  getAllBooksController,
+  getBookByIdController,
+  updateBookController,
+  deleteBookController,
 } from "../controllers/bookController";
 
 const router = Router();
@@ -54,7 +54,7 @@ const router = Router();
  *       '400':
  *         description: Invalid request body
  */
-router.post("/books", createBook);
+router.post("/books", createBookController);
 
 /**
  * @openapi
@@ -78,7 +78,7 @@ router.post("/books", createBook);
  *                   items:
  *                     $ref: '#/components/schemas/Book'
  */
-router.get("/books", getAllBooks);
+router.get("/books", getAllBooksController);
 
 /**
  * @openapi
@@ -109,7 +109,7 @@ router.get("/books", getAllBooks);
  *       '404':
  *         description: Book not found
  */
-router.get("/books/:id", getBookById);
+router.get("/books/:id", getBookByIdController);
 
 /**
  * @openapi
@@ -163,7 +163,7 @@ router.get("/books/:id", getBookById);
  *       '404':
  *         description: Book not found
  */
-router.put("/books/:id", updateBook);
+router.put("/books/:id", updateBookController);
 
 /**
  * @openapi
@@ -192,6 +192,6 @@ router.put("/books/:id", updateBook);
  *       '404':
  *         description: Book not found
  */
-router.delete("/books/:id", deleteBook);
+router.delete("/books/:id", deleteBookController);
 
 export default router;

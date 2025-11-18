@@ -1,91 +1,121 @@
 import { Request, Response } from "express";
-import { Book } from "../models/bookModel"; 
+import {
+  createBook,
+  getAllBooks,
+  getBookById,
+  updateBookById,
+  deleteBookById,
+} from "../services/bookService";
 
-let books: Book[] = [];
-
-/**
- * Create a new book
- * @param req - Express request object
- * @param res - Express response object
- */
-export const createBook = (req: Request, res: Response): void => {
-  const newBook: Book = {
-    id: String(Date.now()),
-    title: req.body.title,
-    author: req.body.author,
-    available: req.body.available,
-    updatedEdition: req.body.updatedEdition,
-  };
-  books.push(newBook);
-  res.status(201).json({ message: "Book created", data: newBook });
-};
+import { successResponse, errorResponse } from "../models/responseModel";
 
 /**
- * Retrieve all books
- * @param req - Express request object
- * @param res - Express response object
+ * Create Book Controller
  */
-export const getAllBooks = (req: Request, res: Response): void => {
-  res.status(200).json({ message: "Books retrieved", data: books });
-};
+export const createBookController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    if (!req.body.title) {
+      res.status(400).json(errorResponse("Title is required"));
+      return;
+    }
 
-/**
- * Retrieve a book by ID
- * @param req - Express request object
- * @param res - Express response object
- */
-export const getBookById = (req: Request, res: Response): void => {
-  const { id } = req.params;
-  const book = books.find((b) => b.id === id);
-  if (!book) {
-    res.status(404).json({ message: "Book not found" });
-    return;
+    const newBook = await createBook(req.body);
+
+    res
+      .status(201)
+      .json(successResponse(newBook, "Book created successfully"));
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(errorResponse("Failed to create book"));
   }
-  res.status(200).json({ message: "Book found", data: book });
 };
 
 /**
- * Update a book by ID
- * @param req - Express request object
- * @param res - Express response object
+ * Get All Books Controller
  */
-export const updateBook = (req: Request, res: Response): void => {
-  const { id } = req.params;
-
-  const idx = books.findIndex((b) => b.id === id);
-  if (idx === -1) {
-    res.status(404).json({ message: "Book not found" });
-    return;
+export const getAllBooksController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const books = await getAllBooks();
+    res.status(200).json(successResponse(books, "Books fetched"));
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(errorResponse("Error fetching books"));
   }
-
-  const updatedBook: Book = {
-    id: books[idx].id, 
-    title: req.body.title,
-    author: req.body.author,
-    available: req.body.available,
-    updatedEdition: req.body.updatedEdition,
-  };
-
-  books[idx] = updatedBook;
-
-  res.status(200).json({
-    message: "Book updated",
-    data: updatedBook,
-  });
 };
 
 /**
- * Delete a book by ID
- * @param req - Express request object
- * @param res - Express response object
+ * Get Book By ID Controller
  */
-export const deleteBook = (req: Request, res: Response): void => {
-  const { id } = req.params;
-  const idx = books.findIndex((b) => b.id === id);
-  if (idx === -1) {
-    res.status(404).json({ message: "Book not found" });
-    return;
+export const getBookByIdController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const book = await getBookById(id);
+
+    if (!book) {
+      res.status(404).json(errorResponse("Book not found"));
+      return;
+    }
+
+    res.status(200).json(successResponse(book));
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(errorResponse("Failed to fetch book"));
   }
-  books.splice(idx, 1);
-  res.status(200).json({ message: "Book deleted" });
+};
+
+/**
+ * Update Book Controller
+ */
+export const updateBookController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    await updateBookById(id, req.body);
+
+    res.status(200).json(successResponse(null, "Book updated"));
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(errorResponse("Failed to update book"));
+  }
+};
+
+/**
+ * Delete Book Controller
+ */
+export const deleteBookController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+
+    const result = await deleteBookById(id);
+
+    if (result.ok) {
+      res.status(200).json(successResponse(result.data, "Book deleted"));
+      return;
+    }
+
+    if (result.code === "NOT_FOUND") {
+      res.status(404).json(errorResponse(result.message));
+      return;
+    }
+
+    res.status(500).json(errorResponse("Something went wrong"));
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(errorResponse("Failed to delete book"));
+  }
 };
