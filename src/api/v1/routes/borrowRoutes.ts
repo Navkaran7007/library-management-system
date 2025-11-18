@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { getAllBorrows, borrowBook, returnBook } from "../controllers/borrowController";
+import { getAllBorrowsController, 
+    borrowBookController, returnBookController } from "../controllers/borrowController";
 
 const router = Router();
 
@@ -25,7 +26,7 @@ const router = Router();
  *                   items:
  *                     $ref: '#/components/schemas/Borrow'
  */
-router.get("/borrow", getAllBorrows); 
+router.get("/borrow", getAllBorrowsController); 
 
 /**
  * @openapi
@@ -65,7 +66,7 @@ router.get("/borrow", getAllBorrows);
  *       '400':
  *         description: Missing bookId or userId
  */
-router.post("/borrow", borrowBook);   
+router.post("/borrow", borrowBookController);   
 
 /**
  * @openapi
@@ -103,6 +104,6 @@ router.post("/borrow", borrowBook);
  *       '404':
  *         description: Borrow record not found
  */
-router.post("/return", returnBook);   
+router.post("/return", returnBookController);   
 
 export default router;
