@@ -15,7 +15,7 @@ describe('CRUD operations', () => {
     const res = await request(app).post('/api/v1/books').send(book);
 
     expect(res.status).toBe(201);
-    expect(res.body.message).toBe('Book created');
+    expect(res.body.message).toBe('Book created successfully');
     expect(res.body.data).toHaveProperty('id');
     expect(res.body.data.title).toBe(book.title);
 
@@ -26,7 +26,7 @@ describe('CRUD operations', () => {
     const res = await request(app).get('/api/v1/books');
 
     expect(res.status).toBe(200);
-    expect(res.body.message).toBe('Books retrieved');
+    expect(res.body.message).toBe('Books fetched');
     expect(Array.isArray(res.body.data)).toBe(true);
   });
 
