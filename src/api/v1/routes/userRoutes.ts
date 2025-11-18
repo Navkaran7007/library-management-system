@@ -7,7 +7,6 @@ import {
 
 const router = Router();
 
-// Example 1: Simple GET endpoint
 /**
  * @openapi
  * /api/v1/users:
