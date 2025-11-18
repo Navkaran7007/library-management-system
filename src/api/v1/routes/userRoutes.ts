@@ -1,8 +1,8 @@
 import { Router } from "express";
 import {
-  createUser,
-  getAllUsers,
-  getUserById
+  createUserController,
+  getAllUsersController,
+  getUserByIdController
 } from "../controllers/userController";
 
 const router = Router();
@@ -29,7 +29,7 @@ const router = Router();
  *                   items:
  *                     $ref: '#/components/schemas/User'
  */
-router.get("/users", getAllUsers);
+router.get("/users", getAllUsersController);
 
 /**
  * @openapi
@@ -60,7 +60,7 @@ router.get("/users", getAllUsers);
  *       '404':
  *         description: User not found
  */
-router.get("/users/:id", getUserById);
+router.get("/users/:id", getUserByIdController);
 
-router.post("/users/", createUser)
+router.post("/users/", createUserController)
 export default router;
