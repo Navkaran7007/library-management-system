@@ -4,9 +4,19 @@ import borrowRoutes from "./api/v1/routes/borrowRoutes";
 import userRoutes from "./api/v1/routes/userRoutes";
 import setupSwagger from "../config/swagger";
 import {limiter} from './api/v1/middleware/rateLimiter';
+import { accessLogger, consoleLogger, errorLogger } from "./api/v1/middleware/logger";
 
 // Initialize Express application
 const app: Express = express();
+// Logging middleware (should be applied early in the middleware stack)
+if (process.env.NODE_ENV === "production") {
+    // In production, log to files
+    app.use(accessLogger);
+    app.use(errorLogger);
+} else {
+    // In development, log to console for immediate feedback
+    app.use(consoleLogger);
+}
 
 app.use(limiter);
 // Define a route
