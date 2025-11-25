@@ -6,6 +6,7 @@ import {
   updateBookController,
   deleteBookController,
 } from "../controllers/bookController";
+import authenticate from "../middleware/authenticate";
 
 const router = Router();
 
@@ -163,7 +164,7 @@ router.get("/books/:id", getBookByIdController);
  *       '404':
  *         description: Book not found
  */
-router.put("/books/:id", updateBookController);
+router.put("/books/:id", authenticate,updateBookController);
 
 /**
  * @openapi
@@ -192,6 +193,6 @@ router.put("/books/:id", updateBookController);
  *       '404':
  *         description: Book not found
  */
-router.delete("/books/:id", deleteBookController);
+router.delete("/books/:id",authenticate, deleteBookController);
 
 export default router;
