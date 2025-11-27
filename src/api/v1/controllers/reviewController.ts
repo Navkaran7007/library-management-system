@@ -4,7 +4,7 @@ import {
   getBookReviewsService,
   updateReviewService,
   deleteReviewService,
-} from "";
+} from "../services/reviewService";
 import { successResponse, errorResponse } from "../models/responseModel";
 
 
