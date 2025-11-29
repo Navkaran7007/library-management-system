@@ -5,6 +5,7 @@ import userRoutes from "./api/v1/routes/userRoutes";
 import setupSwagger from "../config/swagger";
 import {limiter} from './api/v1/middleware/rateLimiter';
 import { accessLogger, consoleLogger, errorLogger } from "./api/v1/middleware/logger";
+import reviewRoutes from "./api/v1/routes/reviewRoutes";
 
 // Initialize Express application
 const app: Express = express();
@@ -28,7 +29,7 @@ app.use(express.json())
 app.use("/api/v1", bookRoutes)
 app.use("/api/v1", borrowRoutes)
 app.use("/api/v1", userRoutes)
-
+app.use("/api/v1",reviewRoutes)
 // Setup Swagger
 setupSwagger(app);
 export default app;
