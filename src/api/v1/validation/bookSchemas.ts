@@ -13,3 +13,7 @@ export const updateBookSchema = Joi.object({
   available: Joi.boolean(),
   updatedEdition: Joi.boolean(),
 }).min(1);
+
+export const idParamSchema = Joi.object({
+  id: Joi.string().required(),
+});
