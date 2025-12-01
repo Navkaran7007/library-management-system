@@ -12,12 +12,30 @@ import {
   updateReviewSchema,
   idParamSchema,
 } from "../validation/reviewSchemas";
+import isAuthorized from "../middleware/authorize";
 
 const router = Router();
 
-router.post("/reviews", validateBody(createReviewSchema),createReviewController);
-router.get("/books/:bookId/reviews", authenticate,getBookReviewsController);
-router.put("/reviews/:id", authenticate,validateParams(updateReviewSchema),updateReviewController);
-router.delete("/reviews/:id", authenticate,validateParams(idParamSchema),deleteReviewController);
+router.post("/reviews", 
+  authenticate,
+  validateBody(createReviewSchema),
+  isAuthorized({ hasRole: ["User","Admin","Librarian"
+  ] }),
+  createReviewController);
+router.get("/books/:bookId/reviews", 
+  authenticate,
+  isAuthorized({ hasRole: ["Admin","Librarian"] }),
+  getBookReviewsController);
+router.put("/reviews/:id", 
+  authenticate,
+  isAuthorized({ hasRole: ["User","Admin","Librarian"] }),
+  validateParams(idParamSchema),
+  validateBody(updateReviewSchema),
+  updateReviewController);
+router.delete("/reviews/:id", 
+  authenticate,
+  isAuthorized({ hasRole: ["Admin","Librarian"] }),
+  validateParams(idParamSchema),
+  deleteReviewController);
 
 export default router;

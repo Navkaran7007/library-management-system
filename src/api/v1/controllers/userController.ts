@@ -64,7 +64,7 @@ export const createUserController = async (
     const userData: Omit<User, "id"> = {
       displayName,
       email,
-      role: "MEMBER", 
+      role: "User", 
       createdAt: now,
       updatedAt: now,
     };
