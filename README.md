@@ -103,15 +103,27 @@ git clone (https://github.com/Navkaran7007/library-management-system)
 
 npm install
 
-3. Api Will Be working at:
+3. Start the Server
+
+npm start
+
+4. Api Will Be working at:
 
 http://localhost:3000
 
 
-4. Swagger Docs is avaliable at this url:
+5. Swagger Docs is avaliable at this url:
 
 http://localhost:3000/api-docs
 
 ** Documentation is also available on github pages.
 
-5. 
+6. Firebase is used in this project
+  To Setup:
+  -Create Project
+  -Go to "Project Settings"
+  -Navigate to "Service Accounts"
+  -Click "Generate new private key"
+  -Download the JSON file
+  -Put this file in Config
+
