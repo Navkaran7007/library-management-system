@@ -89,3 +89,29 @@ Backend capstone project for a Library Management System built with
 * M4: Final demonstration
 * Issues: Issues will be created .
 * CI: linting workflows would be added (.github/workflows/linting) .
+
+
+
+
+** How To Run This Project: **
+
+1. First Clone the Repo
+
+git clone (https://github.com/Navkaran7007/library-management-system)
+
+2. Install the dependecies
+
+npm install
+
+3. Api Will Be working at:
+
+http://localhost:3000
+
+
+4. Swagger Docs is avaliable at this url:
+
+http://localhost:3000/api-docs
+
+** Documentation is also available on github pages.
+
+5. 
