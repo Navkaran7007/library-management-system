@@ -9,6 +9,8 @@ import {
 import authenticate from "../middleware/authenticate";
 import { validateBody, validateParams } from "../middleware/validate";
 import { createBookSchema, idParamSchema, updateBookSchema } from "../validation/bookSchemas";
+import isAuthorized from "../middleware/authorize";
+import { limiter } from "../middleware/rateLimiter";
 
 const router = Router();
 
@@ -57,7 +59,12 @@ const router = Router();
  *       '400':
  *         description: Invalid request body
  */
-router.post("/books",  authenticate, validateBody(createBookSchema),createBookController);
+router.post("/books",
+  limiter,  
+  authenticate, 
+   isAuthorized({ hasRole: ["User","Admin","Librarian"
+  ] }),
+  validateBody(createBookSchema),createBookController);
 
 /**
  * @openapi
@@ -81,7 +88,11 @@ router.post("/books",  authenticate, validateBody(createBookSchema),createBookCo
  *                   items:
  *                     $ref: '#/components/schemas/Book'
  */
-router.get("/books", getAllBooksController);
+router.get("/books",
+  limiter,
+   authenticate,
+   isAuthorized({ hasRole: ["Admin","Librarian"
+  ] }), getAllBooksController);
 
 /**
  * @openapi
@@ -112,7 +123,12 @@ router.get("/books", getAllBooksController);
  *       '404':
  *         description: Book not found
  */
-router.get("/books/:id", validateParams(idParamSchema),getBookByIdController);
+router.get("/books/:id",
+  limiter, 
+  authenticate,
+   isAuthorized({ hasRole: ["User","Admin","Librarian"] }),
+   validateParams(idParamSchema),
+   getBookByIdController);
 
 /**
  * @openapi
@@ -166,7 +182,12 @@ router.get("/books/:id", validateParams(idParamSchema),getBookByIdController);
  *       '404':
  *         description: Book not found
  */
-router.put("/books/:id", authenticate, validateBody(updateBookSchema),updateBookController);
+router.put("/books/:id", 
+  authenticate, 
+  isAuthorized({ hasRole: ["Admin","Librarian"
+  ] }),
+  validateBody(updateBookSchema),
+  updateBookController);
 
 /**
  * @openapi
@@ -195,6 +216,11 @@ router.put("/books/:id", authenticate, validateBody(updateBookSchema),updateBook
  *       '404':
  *         description: Book not found
  */
-router.delete("/books/:id",authenticate, validateParams(idParamSchema),deleteBookController);
+router.delete("/books/:id",
+  authenticate,
+  isAuthorized({ hasRole: ["Admin","Librarian"
+  ] }), 
+  validateParams(idParamSchema),
+  deleteBookController);
 
 export default router;

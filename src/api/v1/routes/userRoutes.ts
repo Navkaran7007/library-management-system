@@ -9,6 +9,7 @@ import { idParamSchema } from "../validation/reviewSchemas";
 import { createUserSchema } from "../validation/userSchemas";
 import authenticate from "../middleware/authenticate";
 import isAuthorized from "../middleware/authorize";
+import { limiter } from "../middleware/rateLimiter";
 
 const router = Router();
 
@@ -73,9 +74,29 @@ router.get("/users/:id",
   isAuthorized({ hasRole: ["Admin", "Librarian"] }),
   validateParams(idParamSchema),getUserByIdController);
 
-router.post("/users/", 
-  authenticate, 
-  isAuthorized({ hasRole: ["User"] }),
+/**
+ * @openapi
+ * /api/v1/users:
+ *   post:
+ *     summary: Create a new user
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []   # Remove this if signup is PUBLIC
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/CreateUserInput'
+ *     responses:
+ *       '201':
+ *         description: User created successfully
+ *       '400':
+ *         description: Validation error
+ */
+router.post("/users/",
+  limiter, 
+  authenticate,
   validateBody(createUserSchema),
   createUserController)
 export default router;

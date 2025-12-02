@@ -6,7 +6,9 @@ import {
   updateDocument,
   deleteDocument,
 } from "../repositories/firestoreRepository";
-
+/**
+ * Create a new review.
+ */
 export const createReviewService = async (
   data: Omit<Review, "id">
 ): Promise<Review> => {
@@ -19,6 +21,9 @@ export const createReviewService = async (
   return { id: String(id), ...data };
 };
 
+/**
+ * Get all reviews for a specific book.
+ */
 export const getBookReviewsService = async (
   bookId: string
 ): Promise<Review[]> => {
@@ -31,7 +36,9 @@ export const getBookReviewsService = async (
     }))
     .filter((review) => review.bookId === bookId);
 };
-
+/**
+ * Update a review by ID.
+ */
 export const updateReviewService = async (
   id: string,
   updateData: Partial<Review>
@@ -57,7 +64,9 @@ export const updateReviewService = async (
     ...updateData,
   };
 };
-
+/**
+ * Delete a review by ID.
+ */
 export const deleteReviewService = async (id: string): Promise<boolean> => {
   const doc = await getDocumentById("reviews", id);
   if (!doc) return false;
