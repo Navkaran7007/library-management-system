@@ -1,0 +1,1129 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Task Management API Documentation",
+    "version": "1.0.0",
+    "description": "This is the API documentation for the Task Management application."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1",
+      "description": "Local server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Book": {
+        "type": "object",
+        "required": [
+          "title",
+          "author",
+          "available",
+          "updatedEdition"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Title of the book",
+            "example": "The Book"
+          },
+          "author": {
+            "type": "string",
+            "description": "Name of the book's author",
+            "example": "David"
+          },
+          "available": {
+            "type": "boolean",
+            "description": "Whether the book is currently available",
+            "example": true
+          },
+          "updatedEdition": {
+            "type": "boolean",
+            "description": "Indicates if the book is the latest or updated edition",
+            "example": false
+          }
+        }
+      },
+      "UpdateBookRequest": {
+        "type": "object",
+        "description": "Update fields of book",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "author": {
+            "type": "string",
+            "example": "Update"
+          },
+          "available": {
+            "type": "boolean",
+            "example": false
+          },
+          "updatedEdition": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "BookIdParam": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for a book",
+            "example": "book7007"
+          }
+        }
+      },
+      "Borrow": {
+        "type": "object",
+        "required": [
+          "id",
+          "bookId",
+          "userId",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "borrow123"
+          },
+          "bookId": {
+            "type": "string",
+            "example": "book_123"
+          },
+          "userId": {
+            "type": "string",
+            "example": "user_456"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "BORROWED",
+              "RETURNED"
+            ],
+            "example": "BORROWED"
+          },
+          "returnDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-03-01T00:00:00Z"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-15T10:30:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-15T10:30:00Z"
+          }
+        }
+      },
+      "CreateBorrowRequest": {
+        "type": "object",
+        "required": [
+          "bookId",
+          "userId",
+          "status"
+        ],
+        "properties": {
+          "bookId": {
+            "type": "string",
+            "example": "book_123"
+          },
+          "userId": {
+            "type": "string",
+            "example": "user_456def"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "BORROWED",
+              "RETURNED"
+            ],
+            "example": "BORROWED"
+          }
+        },
+        "description": "Payload required to create a borrow record"
+      },
+      "UpdateBorrowRequest": {
+        "type": "object",
+        "description": "Payload to update a borrow record",
+        "properties": {
+          "status": {
+            "type": "string",
+            "Interfaces": [
+              "BORROWED",
+              "RETURNED"
+            ],
+            "example": "RETURNED"
+          },
+          "returnDate": {
+            "type": "string",
+            "format": "date",
+            "example": "2024-03-01"
+          }
+        },
+        "minProperties": 1
+      },
+      "BorrowIdParam": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the borrow record",
+            "example": "borrow"
+          }
+        }
+      },
+      "Review": {
+        "type": "object",
+        "required": [
+          "id",
+          "bookId",
+          "userId",
+          "rating",
+          "comment"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "review123"
+          },
+          "bookId": {
+            "type": "string",
+            "example": "book123"
+          },
+          "userId": {
+            "type": "string",
+            "example": "user456"
+          },
+          "rating": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5,
+            "example": 5
+          },
+          "comment": {
+            "type": "string",
+            "example": "One of the best books!"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-15T10:30:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-15T10:30:00Z"
+          }
+        }
+      },
+      "CreateReviewRequest": {
+        "type": "object",
+        "required": [
+          "bookId",
+          "userId",
+          "rating",
+          "comment"
+        ],
+        "properties": {
+          "bookId": {
+            "type": "string",
+            "example": "book123"
+          },
+          "userId": {
+            "type": "string",
+            "example": "user456"
+          },
+          "rating": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5,
+            "example": 5
+          },
+          "comment": {
+            "type": "string",
+            "example": "One of the best books I've read this year!"
+          }
+        },
+        "description": "Create a review"
+      },
+      "UpdateReviewRequest": {
+        "type": "object",
+        "description": "Fields of a review",
+        "properties": {
+          "rating": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5,
+            "example": 3
+          },
+          "comment": {
+            "type": "string",
+            "example": "Updated review: after rereading, some parts felt slow."
+          }
+        },
+        "minProperties": 1
+      },
+      "ReviewIdParam": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for a review",
+            "example": "review123"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "required": [
+          "id",
+          "displayName",
+          "email",
+          "role"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "user7007"
+          },
+          "displayName": {
+            "type": "string",
+            "example": "Nav"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "Nav@example.com"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "LIBRARIAN",
+              "MEMBER"
+            ],
+            "example": "MEMBER"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-15T10:30:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-01-15T10:30:00Z"
+          }
+        }
+      },
+      "CreateUserInput": {
+        "type": "object",
+        "required": [
+          "displayName",
+          "email",
+          "role"
+        ],
+        "properties": {
+          "displayName": {
+            "type": "string",
+            "description": "The user's display name",
+            "example": "Nav"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "User's email address",
+            "example": "Nav@example.com"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "LIBRARIAN",
+              "MEMBER"
+            ],
+            "description": "Role assigned to the user",
+            "example": "MEMBER"
+          }
+        },
+        "description": "Required to create a new user"
+      },
+      "CreateUserRequest": {
+        "type": "object",
+        "required": [
+          "displayName",
+          "email",
+          "role"
+        ],
+        "properties": {
+          "displayName": {
+            "type": "string",
+            "description": "The user's display name",
+            "example": "Nav"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "User's email address",
+            "example": "Nav@example.com"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "LIBRARIAN",
+              "USER"
+            ],
+            "description": "Role assigned to the user",
+            "example": "USER"
+          }
+        },
+        "description": "Required to create a new user"
+      },
+      "UpdateUserRequest": {
+        "type": "object",
+        "description": "Update one or more user fields",
+        "properties": {
+          "displayName": {
+            "type": "string",
+            "example": "Updated Name"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "updated@example.com"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "LIBRARIAN",
+              "USER"
+            ],
+            "example": "LIBRARIAN"
+          }
+        },
+        "minProperties": 1
+      },
+      "UserIdParam": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The user's unique identifier",
+            "example": "user7007"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/api/v1/books": {
+      "post": {
+        "summary": "Create a new book",
+        "tags": [
+          "Books"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "title",
+                  "author",
+                  "available"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Clean Code"
+                  },
+                  "author": {
+                    "type": "string",
+                    "example": "Robert C. Martin"
+                  },
+                  "available": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "updatedEdition": {
+                    "type": "boolean",
+                    "example": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Book created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Book created"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Book"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body"
+          }
+        }
+      },
+      "get": {
+        "summary": "Retrieve all books",
+        "tags": [
+          "Books"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all books",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Books retrieved"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Book"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/books/{id}": {
+      "get": {
+        "summary": "Retrieve a book by ID",
+        "tags": [
+          "Books"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the book"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the book",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Book found"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Book"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Book not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a book by ID",
+        "tags": [
+          "Books"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the book to update"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "title",
+                  "author",
+                  "available"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Clean Code (Updated Edition)"
+                  },
+                  "author": {
+                    "type": "string",
+                    "example": "Robert C. Martin"
+                  },
+                  "available": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "updatedEdition": {
+                    "type": "boolean",
+                    "example": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Book updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Book updated"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Book"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Book not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a book by ID",
+        "tags": [
+          "Books"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the book to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Book deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Book deleted"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Book not found"
+          }
+        }
+      }
+    },
+    "/api/v1/borrow": {
+      "get": {
+        "summary": "Retrieve all borrows",
+        "tags": [
+          "Borrow"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved all borrow",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Borrows retrieved"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Borrow"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Borrow a book",
+        "tags": [
+          "Borrow"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "bookId",
+                  "userId"
+                ],
+                "properties": {
+                  "bookId": {
+                    "type": "string",
+                    "example": "1"
+                  },
+                  "userId": {
+                    "type": "string",
+                    "example": "2"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Book borrowed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Book borrowed successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Borrow"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing bookId or userId"
+          }
+        }
+      }
+    },
+    "/api/v1/return": {
+      "post": {
+        "summary": "Return a borrowed book",
+        "tags": [
+          "Borrow"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "borrowId"
+                ],
+                "properties": {
+                  "borrowId": {
+                    "type": "string",
+                    "example": "2"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Book returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Book returned successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Borrow"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing borrowId"
+          },
+          "404": {
+            "description": "Borrow record not found"
+          }
+        }
+      }
+    },
+    "/api/v1/reviews": {
+      "post": {
+        "summary": "Create a new review for a book",
+        "tags": [
+          "Reviews"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReviewRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Review created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Review created successfully"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Review"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error"
+          },
+          "403": {
+            "description": "Only User, Librarian, or Admin can create reviews"
+          }
+        }
+      }
+    },
+    "/api/v1/books/{bookId}/reviews": {
+      "get": {
+        "summary": "Retrieve all reviews for a specific book",
+        "tags": [
+          "Reviews"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the book to get reviews for"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved book reviews",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Reviews retrieved"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Review"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only Admin or Librarian can view all reviews"
+          }
+        }
+      }
+    },
+    "/api/v1/reviews/{id}": {
+      "put": {
+        "summary": "Update a review",
+        "tags": [
+          "Reviews"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the review to update"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateReviewRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Review updated successfully"
+          },
+          "400": {
+            "description": "Validation error"
+          },
+          "403": {
+            "description": "Only User, Librarian, or Admin may update reviews"
+          },
+          "404": {
+            "description": "Review not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a review",
+        "tags": [
+          "Reviews"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the review to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Review deleted successfully"
+          },
+          "403": {
+            "description": "User, Admin or Librarian may delete reviews"
+          },
+          "404": {
+            "description": "Review not found"
+          }
+        }
+      }
+    },
+    "/api/v1/users": {
+      "get": {
+        "summary": "Retrieve all users",
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Users retrieved"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/User"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new user",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully"
+          },
+          "400": {
+            "description": "Validation error"
+          }
+        }
+      }
+    },
+    "/api/v1/users/{id}": {
+      "get": {
+        "summary": "Retrieve a user by ID",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The unique identifier of the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User found"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}

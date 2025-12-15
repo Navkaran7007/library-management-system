@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "target": "ES6", // Specifies the target JavaScript version.
+        "module": "commonjs", // Specifies the module system to use.
+        "strict": true, // Enable all strict type-checking options.
+        "esModuleInterop": true, // Enables compatibility with CommonJS modules.
+        "skipLibCheck": true, // Skip type checking of declaration files.
+        "forceConsistentCasingInFileNames": true, // Disallow inconsistently-cased references to the same file.
+        "outDir": "./dist", // Output directory for compiled files.
+        "resolveJsonModule": true, // Include modules imported with .json extension.
+        "noImplicitAny": true, // Raise error on expressions and declarations with an implied 'any' type.
+        "strictNullChecks": true, // Ensure strict null checks.
+        "strictFunctionTypes": true, // Ensure stricter checking of function types.
+        "strictPropertyInitialization": true, // Ensure class properties are initialized.
+        "noImplicitThis": true, // Raise error on 'this' expressions with an implied 'any' type.
+        "alwaysStrict": true // Ensure 'use strict' is always emitted.
+    },
+    "include": ["src/**/*", "tests/**/*"], // Include all TypeScript files in the 'src' and 'tests' directories.
+    "exclude": ["node_modules", "dist"] // Exclude 'node_modules' and 'dist' directories.
+}
